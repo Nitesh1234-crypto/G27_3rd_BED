@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const user = require('./user');
 const Schema = mongoose.Schema;
 const BlogPost = new Schema({
   title: String,
@@ -9,4 +10,4 @@ const BlogPost = new Schema({
     ref:"User"
   }
 });
-module.exports=mongoose.model('Blogs', BlogPost)
+module.exports=mongoose.model('Blog', BlogPost);
