@@ -1,21 +1,22 @@
-const {PrismaClient} = require("./generated/prisma");
-let prisma= new PrismaClient();
+const express= require("express");
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({extended:true}))
+const userRoutes= require("./routes/userRoutes")
 
-// async function addUser(email,name){
-//     // User user= new User("","");
-//     //user.save()
-//     const newUser= await prisma.user.create({
-//         data:{
-//             email:email,
-//             name:name
-//         }
+app.use("/api/users",userRoutes)
 
-//     }) 
-//     return "User added"  
-// }
-// // addUser("Nitesh1234@gmail","Nitesh")
-// // .then((data)=>console.log(data))
-// // .catch((e)=>console.log(e))
+
+app.listen(5555,()=>{
+    console.log("server started")
+}
+
+)
+
+
+// addUser("Nitesh1234@gmail","Nitesh")
+// .then((data)=>console.log(data))
+// .catch((e)=>console.log(e))
 
 
 // async function getUser(email){
@@ -43,7 +44,7 @@ async function addTweet(userId, body){
         throw new Error(error.message)
     } 
 }
-// addTweet("1","my first tweet")
+// addTweet("2","my second tweet")
 // .then((data)=>console.log(data))
 // .catch((e)=>console.log(e))
 
@@ -72,13 +73,41 @@ async function updateTweet(id,userId, updatedBody){
 // .then((data)=>console.log(data))
 // .catch((e)=>console.log(e))
 
-async function deleteUser(id){
-    await prisma.user.delete({
-        where:{
-            id:Number(id)
+
+// deleteUser("1")
+// .then((data)=>console.log(data))
+
+
+// async function readTweets(){
+//     //select , includes
+//     //read all tweets 
+//     let alltweets= await prisma.tweet.findMany({
+//         select:{
+//            user:{
+//             select:{
+//                 name:true
+//             }
+//            } ,
+//            body:true,
+//            date:true
+//         }
+//     })
+//     return alltweets;
+// }
+async function readTweets(){
+    //select , include
+    //read all tweets 
+    let alltweets= await prisma.tweet.findMany({
+       include:{
+        user:{
+            select:{
+                name:true
+            }
         }
+       }
     })
-    return "user deleted"
+    return alltweets;
 }
-deleteUser("1")
+readTweets()
 .then((data)=>console.log(data))
+.catch((e)=>{console.log(e)})
