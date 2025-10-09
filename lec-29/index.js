@@ -1,32 +1,30 @@
-const express= require("express");
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({extended:true}))
-const userRoutes= require("./routes/userRoutes")
 
-app.use("/api/users",userRoutes)
+ async function addUser(email,name){
+    // User user= new User("","");
+    //user.save()
+    const newUser= await prisma.user.create({
+        data:{
+            email:email,
+            name:name
+        }
 
-
-app.listen(5555,()=>{
-    console.log("server started")
-}
-
-)
-
+    }) 
+    return "User added"  
+ }
 
 // addUser("Nitesh1234@gmail","Nitesh")
 // .then((data)=>console.log(data))
 // .catch((e)=>console.log(e))
 
 
-// async function getUser(email){
-//     let user= await prisma.user.findUnique({
-//         where:{
-//             email:email
-//         }
-//     })
-//     return user
-// }
+async function getUser(email){
+    let user= await prisma.user.findUnique({
+        where:{
+            email:email
+        }
+    })
+    return user
+}
 // getUser("Nitesh1234@gmail")
 // .then((data)=>console.log(data))
 
@@ -74,40 +72,7 @@ async function updateTweet(id,userId, updatedBody){
 // .catch((e)=>console.log(e))
 
 
-// deleteUser("1")
-// .then((data)=>console.log(data))
 
 
-// async function readTweets(){
-//     //select , includes
-//     //read all tweets 
-//     let alltweets= await prisma.tweet.findMany({
-//         select:{
-//            user:{
-//             select:{
-//                 name:true
-//             }
-//            } ,
-//            body:true,
-//            date:true
-//         }
-//     })
-//     return alltweets;
-// }
-async function readTweets(){
-    //select , include
-    //read all tweets 
-    let alltweets= await prisma.tweet.findMany({
-       include:{
-        user:{
-            select:{
-                name:true
-            }
-        }
-       }
-    })
-    return alltweets;
-}
-readTweets()
-.then((data)=>console.log(data))
-.catch((e)=>{console.log(e)})
+
+
