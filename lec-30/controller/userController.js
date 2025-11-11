@@ -8,3 +8,13 @@ module.exports.postUser= async (req,res)=>{
     message:message
    })
 }
+
+module.exports.getProfile= async (req,res)=>{
+    let userId= req.userId;
+    let userDetail =await User.getProfile(userId);
+    res.json({
+        success:true,
+        data:userDetail
+    })
+
+}

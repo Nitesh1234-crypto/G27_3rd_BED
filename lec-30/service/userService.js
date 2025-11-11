@@ -30,6 +30,20 @@ class User{
     })
     return "user deleted"
 }
+static async getProfile(userId){
+    let isUserDetailExit= await client.get("user:"+userId.toString());
+    if(isUserDetailExit){
+        return isUserDetailExit;
+    }
+    let userDetail = await prisma.user.findUnique({
+        where:{
+            id: userId
+        }
+
+    })
+    await client.set("user:"+userId,JSON.stringify(userDetail))
+    return userDetail;
+}
 
 }
 module.exports = User;
